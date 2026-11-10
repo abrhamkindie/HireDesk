@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -32,4 +33,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public Function vacancies(){
+        return $this ->hasMany(Vacancy::class);
+    }
+
+       public function statusChanges()
+    {
+        return $this->hasMany(ApplicationStatusHistory::class, 'changed_by');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isHr(): bool
+    {
+        return $this->role === 'hr';
+    }
+
 }
