@@ -11,21 +11,33 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+
+
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable ,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
- 
+
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+    
     protected function casts(): array
     {
         return [
@@ -33,11 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public Function vacancies(){
-        return $this ->hasMany(Vacancy::class);
+    public function vacancies()
+    {
+        return $this->hasMany(Vacancy::class);
     }
 
-       public function statusChanges()
+    public function statusChanges()
     {
         return $this->hasMany(ApplicationStatusHistory::class, 'changed_by');
     }
@@ -51,5 +64,4 @@ class User extends Authenticatable
     {
         return $this->role === 'hr';
     }
-
 }

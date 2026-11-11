@@ -19,6 +19,7 @@ Schema::create('application_status_history', function (Blueprint $table) {
     $table->foreignId('changed_by')->nullable()->constrained('users')->nullOnDelete();
     $table->text('note')->nullable();
     $table->timestamp('created_at')->useCurrent();
+    $table->timestamp('updated_at')->useCurrent();
 
     $table->index(['application_id', 'created_at']);
 });

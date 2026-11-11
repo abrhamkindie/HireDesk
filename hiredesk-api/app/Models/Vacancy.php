@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class Vacancy extends Model
 {
-    use HasFactory, HasApiTokens, Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'title',
@@ -23,11 +21,6 @@ class Vacancy extends Model
         'deadline',
         'status',
         'created_by',
-    ];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
     ];
 
     protected function casts(): array
@@ -47,11 +40,6 @@ class Vacancy extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function statusChanges()
-    {
-        return $this->hasMany(ApplicationStatusHistory::class, 'vacancy_id');
     }
 
     public function candidates()

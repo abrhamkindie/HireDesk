@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
+ 
 
 class Application extends Model
 {
-    use HasFactory,HasRoles,HasApiTokens ;
+    use HasFactory  ;
     protected $fillable = [
         'vacancy_id',
         'candidate_id',
