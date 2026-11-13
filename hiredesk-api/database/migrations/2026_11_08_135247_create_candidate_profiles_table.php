@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('candidate_profiles', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('candidate_id')
-        ->constrained('candidates')
-        ->cascadeOnDelete()
-        ->unique();
-    $table->string('phone', 30)->nullable();
-    $table->string('location')->nullable();
-    $table->string('headline')->nullable();
-    $table->text('bio')->nullable();
-    $table->string('resume_path', 500)->nullable();
-    $table->string('linkedin_url', 500)->nullable();
-    $table->string('portfolio_url', 500)->nullable();
-    $table->timestamps();
-});
+        Schema::create('candidate_profiles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('candidate_id')
+                ->constrained('candidates')
+                ->cascadeOnDelete()
+                ->unique();
+            $table->string('phone', 30)->nullable();
+            $table->string('location')->nullable();
+            $table->string('headline')->nullable();
+            $table->text('bio')->nullable();
+            $table->string('resume_path', 500)->nullable();
+            $table->string('linkedin_url', 500)->nullable();
+            $table->string('portfolio_url', 500)->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

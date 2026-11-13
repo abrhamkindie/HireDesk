@@ -2,42 +2,31 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-
-
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
-
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-    
+
     protected function casts(): array
     {
         return [
@@ -45,23 +34,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function vacancies()
+
+    public function vacancies(): HasMany
     {
-        return $this->hasMany(Vacancy::class);
+        return $this->hasMany(Vacancy::class, 'created_by');
     }
 
-    public function statusChanges()
+    public function statusChanges(): MorphMany
     {
-        return $this->hasMany(ApplicationStatusHistory::class, 'changed_by');
+        return $this->morphMany(ApplicationStatusHistory::class, 'actor');
     }
 
-    public function isAdmin(): bool
+    public function isStaff(): bool
     {
-        return $this->role === 'admin';
-    }
-
-    public function isHr(): bool
-    {
-        return $this->role === 'hr';
+        return $this->hasAnyRole(['admin', 'hr']);
     }
 }

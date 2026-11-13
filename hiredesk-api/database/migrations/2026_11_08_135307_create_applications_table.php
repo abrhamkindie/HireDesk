@@ -11,24 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('applications', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('vacancy_id')->constrained()->cascadeOnDelete();
-    $table->foreignId('candidate_id')->constrained()->cascadeOnDelete();
-    $table->text('cover_letter')->nullable();
-    $table->string('resume_path', 500);
-    $table->enum('status', [
-        'new', 'screening', 'shortlisted', 'interview',
-        'offer', 'hired', 'rejected', 'withdrawn',
-    ])->default('new');
-    $table->timestamp('applied_at')->useCurrent();
-    $table->timestamp('status_updated_at')->nullable();
-    $table->timestamps();
+        Schema::create('applications', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('vacancy_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('candidate_id')->constrained()->cascadeOnDelete();
+            $table->text('cover_letter')->nullable();
+            $table->string('resume_path', 500)->nullable();
+            $table->string('resume_disk', 30)->nullable();
+            $table->string('status', 20)->default('new');
+            $table->timestamp('status_updated_at')->useCurrent();
+            $table->timestamps();
 
-    $table->unique(['vacancy_id', 'candidate_id']);
-    $table->index(['vacancy_id', 'status']);
-    $table->index(['candidate_id', 'status']);
-});
+            $table->unique(['vacancy_id', 'candidate_id']);
+            $table->index(['vacancy_id', 'status']);
+            $table->index(['candidate_id', 'status']);
+            $table->index(['status', 'status_updated_at']);
+        });
     }
 
     /**

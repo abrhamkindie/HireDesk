@@ -11,28 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('vacancies', function (Blueprint $table) {
-    $table->id();
-    $table->string('title');
-    $table->string('slug')->unique();
-    $table->text('description');
-    $table->text('requirements')->nullable();
-    $table->enum('employment_type', [
-        'fulltime', 'parttime', 'contract', 'internship', 'remote',
-    ])->default('fulltime');
-    $table->string('location')->nullable();
-    $table->decimal('salary_min', 12, 2)->nullable();
-    $table->decimal('salary_max', 12, 2)->nullable();
-    $table->date('deadline')->nullable();
-    $table->enum('status', ['draft', 'open', 'closed'])->default('draft');
-    $table->foreignId('created_by')
-        ->constrained('users')
-        ->restrictOnDelete();
-    $table->timestamps();
+        Schema::create('vacancies', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->text('requirements')->nullable();
+            $table->string('employment_type', 20)->default('fulltime');
+            $table->string('workplace_type', 20)->default('onsite');
+            $table->string('location')->nullable();
+            $table->decimal('salary_min', 12, 2)->nullable();
+            $table->decimal('salary_max', 12, 2)->nullable();
+            $table->date('deadline')->nullable();
+            $table->string('status', 20)->default('draft');
+            $table->timestamp('published_at')->nullable();
+            $table->foreignId('created_by')
+                ->constrained('users')
+                ->restrictOnDelete();
+            $table->timestamps();
+            $table->softDeletes();
 
-    $table->index(['status', 'deadline']);
-    $table->index('employment_type');
-});
+            $table->index(['status', 'deadline']);
+            $table->index('employment_type');
+            $table->index('workplace_type');
+            $table->index('published_at');
+        });
     }
 
     /**

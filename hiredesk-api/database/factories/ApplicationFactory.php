@@ -14,6 +14,9 @@ class ApplicationFactory extends Factory
 {
     protected $model = Application::class;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
@@ -21,9 +24,7 @@ class ApplicationFactory extends Factory
             'candidate_id' => Candidate::factory(),
             'cover_letter' => fake()->paragraph(),
             'resume_path' => 'resumes/'.fake()->uuid().'.pdf',
-            'status' => 'new',
-            'applied_at' => now(),
-            'status_updated_at' => null,
+            'resume_disk' => 'local',
         ];
     }
 }

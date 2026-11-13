@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('candidates', function (Blueprint $table) {
-    $table->id();
-    $table->string('name');
-    $table->string('email')->unique();
-    $table->string('password')->nullable();
-    $table->string('google_id')->nullable()->unique();
-    $table->string('avatar_url', 500)->nullable();
-    $table->timestamp('email_verified_at')->nullable();
-    $table->rememberToken();
-    $table->timestamps();
-});
+        Schema::create('candidates', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password')->nullable();
+            $table->string('google_id')->nullable()->unique();
+            $table->string('avatar_url', 500)->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
